@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Index | ICS</title>
+</head>
+
+<body>
+    <!-- header design -->
+    <header class="header">
+        <a href="/static/images/ICS.png" class="logo">ICS<span class="animate" style="--i:1;"></span></a>
+
+        <div class="bx bx-menu" id="menu-icon"><span class="animate" style="--i:2;"></span></div>
+
+        <nav class="navbar">
+            <a href="#home" class="active">Home</a>
+            <a href="/templates/login.html">Login</a>
+            <a href="/templates/upload.html">Upload Image</a>
+            <a href="/templates/contact.html">Contact Us</a>
+            <a href="/templates/team.html">Our Team</a>
+
+            <span class="active-nav"></span>
+            <span class="animate" style="--i:2;"></span>
+        </nav>
+    </header>
+
+    <!-- Home section design -->
+    <section class="home show-animate" id="home">
+        <div class="home-content">
+            <h1>Design <span>Beyond Boundaries </span><span class="animate" style="--i:2;"></span></h1>
+            <div class="text-animate">
+                <h3>Virtual Design Editor</h3>
+                <span class="animate" style="--i:3;"></span>
+            </div>
+            <p>Welcome to IntelliCraft Studio(ICS). <br>
+                ICS is the ultimate tool for unleashing your creativity and transforming your photos into personalized
+                masterpieces. With an intuitive interface and a vast array of customization options, ICS empowers users
+                to express themselves like never before.
+                <span class="animate" style="--i:4;"></span>
+            </p>
+
+            <div class="btn-box">
+                <a href="#" class="btn" id="openModalBtn">Unleash Your Creativity</a>
+                <span class="animate" style="--i:5;"></span>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Please sign-in first to use this service</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="home-img">
+            <img src="/static/images/aesthetic-shapes.gif" alt="">
+            <span class="animate scroll" style="--i:2;"></span>
+        </div>
+        <div class="home-imgHover"></div>
+        <span class="animate home-img" style="--i:7;"></span>
+    </section>
+
+    <!-- UploadPic section design -->
+
+
+
+    <!-- ContactUs section design -->
+    
+    <!-- OurTeam section design -->
+
+    <!-- footer design -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 | Designed and
+                Maintained by Team VillainArc | All
+                Rights Reserved</p>
+            <span class="animate scroll" style="--i:1;"></span>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
+            <span class="animate scroll" style="--i:3;"></span>
+        </div>
+    </footer>
+
+    <script>
+        // toggle icon navbar
+        let menuIcon = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
+
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        }
+
+        // scroll sections
+        let sections = document.querySelectorAll('section');
+        let navLinks = document.querySelectorAll('header nav a');
+
+        window.onscroll = () => {
+            sections.forEach(sec => {
+                let top = window.scrollY;
+                let offset = sec.offsetTop - 100;
+                let height = sec.offsetHeight;
+                let id = sec.getAttribute('id');
+
+                if (top >= offset && top < offset + height) {
+                    // active navbar links
+                    navLinks.forEach(links => {
+                        links.classList.remove('active');
+                        document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+                    });
+                    // active sections for animation on scroll
+                    sec.classList.add('show-animate');
+                }
+                // if want to animation that repeats on scroll use this
+                else {
+                    sec.classList.remove('show-animate');
+                }
+            });
+
+            // sticky navbar
+            let header = document.querySelector('header');
+
+            header.classList.toggle('sticky', window.scrollY > 100);
+
+            // remove toggle icon and navbar when click navbar links (scroll)
+            menuIcon.classList.remove('bx-x');
+            navbar.classList.remove('active');
+
+            // animation footer on scroll
+            let footer = document.querySelector('footer');
+
+            footer.classList.toggle('show-animate', this.innerHeight + this.scrollY >= document.scrollingElement.scrollHeight);
+        }
+        // Get the modal and button elements
+        var modal = document.getElementById("myModal");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var closeModalBtn = document.getElementsByClassName("close")[0];
+
+        // Open the modal when the button is clicked
+        openModalBtn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Close the modal when the close button is clicked
+        closeModalBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+    </script>
+</body>
+
+</html>
