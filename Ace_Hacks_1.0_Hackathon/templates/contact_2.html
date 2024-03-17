@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Contact Us | ICS</title>
+</head>
+
+<body>
+    <!-- header design -->
+    <header class="header">
+        <div class="bx bx-menu" id="menu-icon"><span class="animate" style="--i:2;"></span></div>
+        <img src="/static/images/ICS.png" alt="Logo" style="width: 100px;">
+
+        <nav class="navbar" style="padding-top: 20px; padding-left: 520px;">
+            <a href="/home" class="active">Home</a>
+            <a href="/upload">Upload Image</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/team">Our Team</a>
+
+            <span class="active-nav"></span>
+            <span class="animate" style="--i:2;"></span>
+        </nav>
+    </header>
+
+
+
+
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact <span>Us</span><span class="animate scroll" style="--i:1;"></span></h2>
+
+        <form action="/contact" method="post">
+            <div class="input-box">
+                <div class="input-field">
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name" required>
+                    <span class="focus"></span>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="email" name="email" placeholder="Email" required>
+                    <span class="focus"></span>
+                </div>
+
+                <span class="animate scroll" style="--i:3;"></span>
+            </div>
+            <div class="input-box">
+                <div class="input-field">
+                    <input type="number" id="phone_number" name="phone_number" placeholder="Mobile Number" required>
+                    <span class="focus"></span>
+                </div>
+
+                <span class="animate scroll" style="--i:5;"></span>
+            </div>
+
+            <div class="textarea-field">
+                <textarea cols="30" rows="10" id="message" name="message" placeholder="Your Message"
+                    required></textarea>
+                <span class="focus"></span>
+
+                <span class="animate scroll" style="--i:7;"></span>
+            </div>
+
+            <div class="btn-box btns">
+                <button type="submit" class="btn">Submit</button>
+
+                <span class="animate scroll" style="--i:9;"></span>
+            </div>
+        </form>
+    </section>
+    <script>
+        // toggle icon navbar
+        let menuIcon = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
+
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        }
+
+        // scroll sections
+        let sections = document.querySelectorAll('section');
+        let navLinks = document.querySelectorAll('header nav a');
+
+        window.onscroll = () => {
+            sections.forEach(sec => {
+                let top = window.scrollY;
+                let offset = sec.offsetTop - 100;
+                let height = sec.offsetHeight;
+                let id = sec.getAttribute('id');
+
+                if (top >= offset && top < offset + height) {
+                    // active navbar links
+                    navLinks.forEach(links => {
+                        links.classList.remove('active');
+                        document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+                    });
+                    // active sections for animation on scroll
+                    sec.classList.add('show-animate');
+                }
+                // if want to animation that repeats on scroll use this
+                else {
+                    sec.classList.remove('show-animate');
+                }
+            });
+
+            // sticky navbar
+            let header = document.querySelector('header');
+
+            header.classList.toggle('sticky', window.scrollY > 100);
+
+            // remove toggle icon and navbar when click navbar links (scroll)
+            menuIcon.classList.remove('bx-x');
+            navbar.classList.remove('active');
+
+            // animation footer on scroll
+            let footer = document.querySelector('footer');
+
+            footer.classList.toggle('show-animate', this.innerHeight + this.scrollY >= document.scrollingElement.scrollHeight);
+        }
+        // Get the modal and button elements
+        var modal = document.getElementById("myModal");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var closeModalBtn = document.getElementsByClassName("close")[0];
+
+        // Open the modal when the button is clicked
+        openModalBtn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Close the modal when the close button is clicked
+        closeModalBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

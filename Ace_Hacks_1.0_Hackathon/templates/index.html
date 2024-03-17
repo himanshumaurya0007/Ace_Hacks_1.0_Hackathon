@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Index | ICS</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="bx bx-menu" id="menu-icon"><span class="animate" style="--i:2;"></span></div>
+
+        <nav class="navbar" style="padding-top: 20px; padding-left: 520px;">
+            <a href="/" class="active">Home</a>
+            <a href="/sign_in">Login</a>
+            <a href="#" id="openModalBtn2">Upload Image</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/team">Our Team</a>
+
+            <span class="active-nav"></span>
+            <span class="animate" style="--i:2;"></span>
+        </nav>
+    </header>
+
+    <section class="home show-animate" id="home" style="display: flex;">
+
+        <div class="home-content">
+            <img src="/static/images/ICS.png" alt="Logo" style="width: 350px;">
+            <div class="text-animate">
+                <h3>Virtual Design Editor</h3>
+                <span class="animate" style="--i:3;"></span>
+            </div>
+            <p class="welcome-text">
+                Welcome to IntelliCraft Studio(ICS). <br>
+                ICS is the ultimate tool for unleashing your creativity and transforming your photos into personalized
+                masterpieces. With an intuitive interface and a vast array of customization options, ICS empowers users
+                to express themselves like never before.
+                <span class="animate" style="--i:4;"></span>
+            </p>
+
+            <div class="btn-box">
+                <a href="#" class="btn" id="openModalBtn" style="padding: 5px;">Unleash Your Creativity</a>
+                <span class="animate" style="--i:5;"></span>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Please sign-in first to use this service</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="home-img padded">
+            <img src="/static/images/gif.gif" alt="GIF" style="width: 700px;">
+            <span class="animate scroll" style="--i:2;"></span>
+        </div>
+
+        <div class="home-imgHover"></div>
+        <span class="animate home-img" style="--i:7;"></span>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 | Designed and Maintained by Team VillainArc | All Rights Reserved</p>
+            <span class="animate scroll" style="--i:1;"></span>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
+            <span class="animate scroll" style="--i:3;"></span>
+        </div>
+    </footer>
+
+    <script>
+        let menuIcon = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
+
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        }
+
+        let sections = document.querySelectorAll('section');
+        let navLinks = document.querySelectorAll('header nav a');
+
+        window.onscroll = () => {
+            sections.forEach(sec => {
+                let top = window.scrollY;
+                let offset = sec.offsetTop - 100;
+                let height = sec.offsetHeight;
+                let id = sec.getAttribute('id');
+
+                if (top >= offset && top < offset + height) {
+                    navLinks.forEach(links => {
+                        links.classList.remove('active');
+                        document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+                    });
+                    sec.classList.add('show-animate');
+                }
+                else {
+                    sec.classList.remove('show-animate');
+                }
+            });
+            let header = document.querySelector('header');
+
+            header.classList.toggle('sticky', window.scrollY > 100);
+            menuIcon.classList.remove('bx-x');
+            navbar.classList.remove('active');
+
+            let footer = document.querySelector('footer');
+
+            footer.classList.toggle('show-animate', this.innerHeight + this.scrollY >= document.scrollingElement.scrollHeight);
+        }
+        var modal = document.getElementById("myModal");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var closeModalBtn = document.getElementsByClassName("close")[0];
+
+        openModalBtn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        closeModalBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        var modal = document.getElementById("myModal");
+        var openModalBtn2 = document.getElementById("openModalBtn2");
+        var closeModalBtn2 = document.getElementsByClassName("close")[0];
+
+        openModalBtn2.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        closeModalBtn2.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+    </script>
+</body>
+
+</html>
