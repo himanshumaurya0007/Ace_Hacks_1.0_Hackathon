@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Cropper</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #image-container {
+        max-width: 80%;
+        max-height: 80%;
+        position: relative;
+    }
+    #preview {
+        margin-top: 20px;
+        max-width: 100%;
+    }
+    .custom-design {
+        position: absolute;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+<div>
+    <input type="file" id="fileInput" accept="image/*">
+</div>
+<div id="image-container" style="display: none;">
+    <img id="image" src="" alt="Picture">
+</div>
+<div>
+    <button id="cropButton" onclick="cropImage()">Crop Image</button>
+    <button id="finalButton" onclick="finalizeCrop()" style="display:none;">Final</button>
+    <!-- <button id="uploadButton" onclick="uploadCustomDesign()" style="display:none;">Upload Custom Design</button>
+    <select id="designSelect" onchange="addCustomDesign()">
+        <option value="" disabled selected>Select Custom Design</option>
+        <option value="design1.png">Design 1</option>
+        <option value="design2.png">Design 2</option>
+
+    </select> -->
+</div>
+<!-- Include Cropper.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script>
+    var cropper;
+    var croppedCanvas;
+    var customDesigns = [];
+
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var image = document.getElementById('image');
+            image.src = event.target.result;
+            document.getElementById('image-container').style.display = 'block';
+            document.getElementById('cropButton').style.display = 'block';
+            cropper = new Cropper(image, {
+                aspectRatio: NaN, // Free cropping (no fixed aspect ratio)
+                viewMode: 1,
+                autoCropArea: 0.5,
+                cropBoxResizable: false,
+                zoomable: false
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function cropImage() {
+        croppedCanvas = cropper.getCroppedCanvas();
+        if (!croppedCanvas) {
+            return;
+        }
+        // Get cropped image as a blob
+        croppedCanvas.toBlob(function (blob) {
+            // Do something with the cropped blob
+            // For example, you can send it to a server via AJAX
+            var croppedImage = document.createElement('img');
+            croppedImage.src = URL.createObjectURL(blob);
+            croppedImage.id = 'preview';
+            document.body.appendChild(croppedImage);
+            // Hide original image and crop button
+            document.getElementById('image-container').style.display = 'none';
+            document.getElementById('cropButton').style.display = 'none';
+            // Show final and upload buttons
+            document.getElementById('finalButton').style.display = 'block';
+            document.getElementById('uploadButton').style.display = 'block';
+        });
+    }
+
+    function finalizeCrop() {
+        if (!croppedCanvas) {
+            return;
+        }
+        // Display the final cropped image
+        var finalImage = document.createElement('img');
+        finalImage.src = croppedCanvas.toDataURL();
+        finalImage.id = 'finalPreview';
+        finalImage.style.maxWidth = '100%';
+        document.body.appendChild(finalImage);
+        // Hide the final and upload buttons
+        document.getElementById('finalButton').style.display = 'none';
+        document.getElementById('uploadButton').style.display = 'none';
+    }
+
+    function uploadCustomDesign() {
+        // Optionally, you can add code here to handle the custom design upload
+        // For demonstration, let's just reload the page
+        location.reload();
+    }
+
+    function addCustomDesign() {
+        var designSelect = document.getElementById('designSelect');
+        var selectedDesign = designSelect.value;
+        if (!selectedDesign) {
+            return;
+        }
+        var designImage = new Image();
+        designImage.src = selectedDesign;
+        designImage.className = 'custom-design';
+        document.getElementById('image-container').appendChild(designImage);
+        customDesigns.push(designImage);
+    }
+</script>
+</body>
+</html>
