@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/upload.css">
+    <title>Edit | ICS</title>
+</head>
+
+<body>
+    <div class="container disable">
+        <h2><img src="/static/images/ICS.png" style="width: 135px"></h2>
+        <div class="wrapper">
+            <div class="preview-img-container">
+                <div class="overlay">
+                    <img id="previewImg1" class="preview-img" src="/static/images/image-placeholder.svg"
+                        alt="preview-img">
+                    <img id="previewImg2" class="preview-img" src="/static/images/image-placeholder.svg"
+                        alt="preview-img">
+                </div>
+                <div class="crop-grid"></div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="row">
+                <input type="file" class="file-input" accept="image/*" hidden>
+                <button class="choose-img" data-input="0">Choose Image 1</button>
+                <input type="file" class="file-input" accept="image/*" hidden>
+                <button class="choose-img" data-input="1">Choose Image 2</button>
+                <button class="save-img">Save Image and Proceed</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <script src="/static/js/upload.js"></script> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileInputs = document.querySelectorAll(".file-input"),
+                previewImgs = document.querySelectorAll(".preview-img"),
+                saveImgBtn = document.querySelector(".save-img");
+
+            let croppers = []; // Array to store Cropper objects
+
+            const loadImage = (index) => (event) => {
+                let file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function () {
+                    previewImgs[index].src = reader.result;
+                    previewImgs[index].addEventListener("load", () => {
+                        document.querySelector(".container").classList.remove("disable");
+
+                        // Initialize Cropper
+                        croppers[index] = new Cropper(previewImgs[index], {
+                            aspectRatio: NaN, // Set aspect ratio as you desire or keep it NaN for free selection
+                            viewMode: 1, // Set the view mode as you need
+                            crop(event) {
+                                // This function will be called when crop area is changed
+                                // You can get crop box data using: event.detail.width, event.detail.height, event.detail.x, event.detail.y
+                                // Example usage: console.log(event.detail.x, event.detail.y, event.detail.width, event.detail.height);
+                                // Display cropped image
+                                const croppedCanvas = croppers[index].getCroppedCanvas();
+                                if (croppedCanvas) {
+                                    previewImgs[index].src = croppedCanvas.toDataURL();
+                                }
+                            },
+                        });
+
+                        // Disable the cropper by default
+                        if (croppers[index]) {
+                            croppers[index].disable();
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            };
+
+            fileInputs.forEach((input, index) => {
+                input.addEventListener("change", loadImage(index));
+            });
+
+            document.querySelectorAll(".choose-img").forEach(button => {
+                button.addEventListener("click", function () {
+                    const inputIndex = this.getAttribute("data-input");
+                    fileInputs[inputIndex].click();
+                });
+            });
+
+            saveImgBtn.addEventListener("click", () => {
+                // Save image functionality
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                const img1 = new Image();
+                const img2 = new Image();
+
+                // Find the maximum dimensions of the images
+                const maxWidth = Math.max(previewImgs[0].naturalWidth, previewImgs[1].naturalWidth);
+                const maxHeight = Math.max(previewImgs[0].naturalHeight, previewImgs[1].naturalHeight);
+
+                // Set canvas size to fit both images
+                canvas.width = maxWidth;
+                canvas.height = maxHeight;
+
+                // Load images onto canvas
+                img1.onload = function () {
+                    ctx.drawImage(img1, 0, 0, maxWidth, maxHeight);
+                    img2.onload = function () {
+                        ctx.drawImage(img2, 0, 0, maxWidth, maxHeight);
+                        const dataURL = canvas.toDataURL();
+                        const link = document.createElement("a");
+                        link.download = "merged_image.png";
+                        link.href = dataURL;
+                        link.click();
+                    };
+                    img2.src = previewImgs[1].src;
+                };
+                img1.src = previewImgs[0].src;
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
